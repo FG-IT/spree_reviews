@@ -1,0 +1,5 @@
+<% if can? :admin, Spree::Review %>
+  <li class="sidebar-menu-item d-block w-100">
+    <%= tab "Review Settings", url: spree.edit_admin_review_settings_path %>
+  </li>
+<% end %>
