@@ -8,10 +8,16 @@ Spree::Core::Engine.add_routes do
     end
     resource :review_settings, only: [:edit, :update]
   end
-
+  namespace :api do
+    namespace :v1 do
+      resources :reviews, only: [:create]
+    end
+  end
   resources :products, only: [] do
     resources :reviews, only: [:index, :new, :create] do
     end
   end
   post '/reviews/:review_id/feedback(.:format)' => 'feedback_reviews#create', as: :feedback_reviews
+
+
 end

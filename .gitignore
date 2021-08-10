@@ -12,3 +12,5 @@ coverage
 .ruby-gemset
 tmp
 gemfiles/*.gemfile.lock
+v1\
+v1\

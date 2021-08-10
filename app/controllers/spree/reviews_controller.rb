@@ -1,10 +1,17 @@
 class Spree::ReviewsController < Spree::StoreController
   helper Spree::BaseHelper
+  helper Spree::ProductsHelper
+  helper Spree::FrontendHelper
   before_action :load_product, only: [:index, :new, :create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    @approved_reviews = Spree::Review.approved.where(product: @product)
+    @approved_reviews = Spree::Review.approved.where(product: @product).page(params[:page]).per(params[:per_page]).order(created_at: :desc)
+    if @approved_reviews.any?
+      render template: 'spree/reviews/index', layout: false
+    else
+      head :no_content
+    end
   end
 
   def new
@@ -24,6 +31,7 @@ class Spree::ReviewsController < Spree::StoreController
 
     authorize! :create, @review
     if @review.save
+      @review.images.attach(params[:review][:images])
       flash[:notice] = Spree.t(:review_successfully_submitted)
       redirect_to spree.product_path(@product)
     else

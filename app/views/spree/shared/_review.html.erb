@@ -1,26 +1,26 @@
-<div class="review" itemprop="reviews" itemscope itemtype="http://schema.org/Review">
-  <span class="reviews-rating" title="<%= txt_stars(review.rating) %>">
-    <%= render 'spree/reviews/stars', stars: review.rating %>
-  </span>
-  <span itemprop="name"><%= review.title %></span>
-  <br/>
-  <span class="attribution"><%= Spree.t(:submitted_on) %>
-    <strong><%= l review.created_at.to_date %></strong>
-  </span>
-  <span itemprop="datePublished" content="<%= review.created_at.to_date.to_s %>"></span>
-  <span itemprop="reviewRating" content="<%= review.rating %>"></span>
-  <% if review.show_identifier %>
-    <% if Spree::Reviews::Config[:show_email] && review.user %>
-      <span itemprop="author"><%= review.user.email %></span>
-    <% else %>
-      <span itemprop="author"><%= review.name %></span>
-    <% end %>
-  <% else %>
-    <span itemprop="author"><%= Spree.t(:anonymous) %></span>
-  <% end %>
+<div class="review-item bb" itemprop="reviews" itemscope itemtype="http://schema.org/Review">
+  <%= render 'spree/reviews/stars', stars: review.rating %>
+  <h6><%= review.title %></h6>
+  <strong>
+    <time><%=  review.created_at.to_date.strftime("%B %e, %Y") %></time>
+    by <strong  itemprop="author"><%= review.name %></strong>
+    <% if review.verified_purchase %><span class="brand">Verified purchase</span> <%end %>
+  </strong>
   <div itemprop="reviewBody">
     <%= simple_format(review.review) %>
   </div>
+  <% if review.images.attached? %>
+  <div class="d-flex">
+    <% review.images.each do |img| %>
+      <div class="gallery-photo">
+      <a href=""><%= image_tag(main_app.url_for(img.variant(resize: "85x85"))) %></a>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+  <div class="user" ></div>
+  <span itemprop="datePublished" content="<%= review.created_at.to_date.to_s %>"></span>
+  <span itemprop="reviewRating" content="<%= review.rating %>"></span>
   <% if Spree::Reviews::Config[:feedback_rating] && (!Spree::Reviews::Config[:require_login] || spree_current_user) %>
     <div class="feedback_review" id="feedback_review_<%= review.id %>">
       <%= render 'spree/feedback_reviews/form', review: review %>

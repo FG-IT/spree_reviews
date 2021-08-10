@@ -1,0 +1,66 @@
+<% stars = product.stars %>
+<% reviews_count = product.reviews_count %>
+<header class="bb">
+  <div class="d-md-flex">
+    <div class="reviews-summary">
+      <div class="stars"><span class="empty"></span><span class="full" style="width:<%=stars*100/5 %>%"></span></div>
+      <div class="total-rating">
+        <%= stars %> out of 5
+      </div>
+      <div class="number-of-reviews">
+        (<%= Spree.t(:based_upon_review_count, count: reviews_count) %>)
+      </div>
+    </div>
+
+    <% rating_summary = JSON.parse(product.rating_summary) %>
+    <div class="reviews-breakdown flex-fill">
+      <table>
+        <tbody>
+        <% Array(1..5).reverse.each do |rate| %>
+          <% percentage = rating_summary[rate.to_s] ? (rating_summary[rate.to_s] * 100 / reviews_count) : 0 %>
+          <tr>
+            <td class="col1"><%= rate %> stars</td>
+            <td class="col2">
+              <div class="bar"><span class="empty"></span><span class="full" style="width:<%=percentage %>%"></span></div>
+            </td>
+            <td class="col3"><%= percentage %>%</td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="reviews-button">
+      <button class="">Write a Review</button>
+    </div>
+  </div>
+  <div class="d-md-flex">
+    <div class="reviews-star-rating">
+      <div class="select-wrapper">
+        <select id="" name="">
+          <option value="" selected="selected">Star Rating</option>
+          <option value="">1 Star</option>
+          <option value="">2 Star</option>
+          <option value="">3 Star</option>
+          <option value="">4 Star</option>
+          <option value="">5 Star</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex-fill reviews-filter">
+      <form class="d-flex justify-content-end">
+        <input type="search" name="" id="" placeholder="Search Reviews" class="form-text">
+        <input type="submit" value="" class="form-submit">
+
+        <div class="select-wrapper">
+          <select id="review-sort-by" name="">
+            <option value="">Sort By</option>
+            <option value="rating">Star Rating</option>
+            <option value="created_at">Submission Time</option>
+            <option value="photo">Reviews with Photos</option>
+            <option value="helpful">Top Reviews</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+</header>

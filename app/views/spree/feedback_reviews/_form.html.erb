@@ -1,13 +1,15 @@
-<%= render 'spree/feedback_reviews/summary', review: review %>
 <%= form_for (@feedback_review ||= review.feedback_reviews.build), url: feedback_reviews_path(review), method: :post, remote: true do |f| %>
   <% unless @feedback_review.errors.empty? %>
     <div class="error"><%= @feedback_review.errors[:rating] %></div>
   <% end %>
-  <%= Spree.t(:was_this_review_helpful) %>
-  <% for i in 1..Spree::Reviews::Config.stars %>
-    <%= radio_button_tag 'feedback_review[rating]', Spree.t(:star, count: i), false, class: 'star' %>
-  <% end %>
-  <button class="feedback-review btn btn-default">
-    <%= Spree.t(:say_yes) %>
-  </button>
+  <%= hidden_field  'feedback_review[rating]', value: 5 %>
+  <div class="helper">
+    <div>
+      <strong><%= review.feedback_reviews.count %></strong> people found this helpful
+    </div>
+    <div class="d-flex align-items-center">
+      <button class="helpful">Helpful</button>
+      <a href="">Comment</a> | <a href="">Report</a>
+    </div>
+  </div>
 <% end %>

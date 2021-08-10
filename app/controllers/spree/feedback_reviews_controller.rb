@@ -15,7 +15,7 @@ class Spree::FeedbackReviewsController < Spree::StoreController
 
     respond_to do |format|
       format.html { redirect_back(fallback_location: root_path) }
-      format.js   { render action: :create }
+      format.js { render action: :create }
     end
   end
 
@@ -34,7 +34,8 @@ class Spree::FeedbackReviewsController < Spree::StoreController
   end
 
   def sanitize_rating
-    params[:feedback_review][:rating].to_s.sub!(/\s*[^0-9]*\z/, '') unless params[:feedback_review] && params[:feedback_review][:rating].blank?
+    params[:feedback_review][:rating] = 5
+    #params[:feedback_review][:rating].to_s.sub!(/\s*[^0-9]*\z/, '') unless params[:feedback_review] && params[:feedback_review][:rating].blank?
   end
 
   def redirect_back(fallback_location:)

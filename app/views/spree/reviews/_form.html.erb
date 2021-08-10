@@ -1,4 +1,4 @@
-<%= form_for review, url: product_reviews_path(product), html: { method: :post } do |f| %>
+<%= form_for review, url: product_reviews_path(product), html: {method: :post} do |f| %>
   <%= render 'spree/shared/error_messages', target: review %>
 
   <div class="form-group">
@@ -29,7 +29,10 @@
       <% end %>
     </div>
   <% end %>
-
+  <div class="form-group">
+    <%= f.label :images %>
+    <%= f.file_field :images, multiple: true %>
+  </div>
   <div class="form-actions">
     <%= f.submit Spree.t(:submit_your_review), class: 'btn btn-default' %>
   </div>

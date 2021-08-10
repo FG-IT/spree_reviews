@@ -1,17 +1,17 @@
 class Spree::Review < ActiveRecord::Base
   belongs_to :product, touch: true
   belongs_to :user, class_name: Spree.user_class.to_s
-  has_many   :feedback_reviews
-
+  has_many :feedback_reviews
+  has_many_attached :images
   after_save :recalculate_product_rating, if: :approved?
   after_destroy :recalculate_product_rating
 
   validates :name, :review, presence: true
   validates :rating, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 5,
-    message: Spree.t(:you_must_enter_value_for_rating)
+      only_integer: true,
+      greater_than_or_equal_to: 1,
+      less_than_or_equal_to: 5,
+      message: Spree.t(:you_must_enter_value_for_rating)
   }
 
   default_scope { order('spree_reviews.created_at DESC') }
