@@ -1,13 +1,12 @@
 <% stars = product.stars %>
 <% reviews_count = product.reviews_count %>
-
+<% unless reviews_count==0 %>
 <div class="stars-wrapper">
   <div class="stars"><span class="empty"></span><span class="full" style="width:<%=stars*100/5 %>>%"></span></div>
   (<%= stars %>)
   <a href="#product-reviews" data-turbolinks="false"><%= Spree::Review.model_name.human(count: reviews_count) %></a>
-
 </div>
-
+<% end %>
 <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
   <span itemprop="ratingValue" content="<%= stars %>"></span>
   <span itemprop="reviewCount" content="<%= reviews_count %>"></span>
