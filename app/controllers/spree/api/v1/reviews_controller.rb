@@ -6,9 +6,11 @@ module Spree
 
         before_action :load_product, only: [:new, :create]
 
-        # def show
-        #
-        # end
+        def index
+          @reviews = Spree::Review.approved.ransack(params[:q]).result.order(created_at: :desc).page(params[:page]).per(params[:per_page])
+          respond_with(@reviews, status: 200, default_template: :index)
+        end
+
         def create
           @review = Spree::Review.new(review_params)
           @review.product = @product
