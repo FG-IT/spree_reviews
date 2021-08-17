@@ -7,6 +7,29 @@ class Spree::ReviewsController < Spree::StoreController
 
   def index
     @approved_reviews = Spree::Review.approved.where(product: @product).page(params[:page]).per(params[:per_page]).order(created_at: :desc)
+
+    if params[:rating] && params[:rating] != ''
+      @approved_reviews = @approved_reviews.rating_filter params[:rating]
+    end
+    if params[:search] && params[:search] != ''
+      @approved_reviews = @approved_reviews.where("review LIKE ?", "%#{params[:search]}%")
+    end
+    if params[:sort]
+      case params[:sort]
+      when 'rating'
+        @approved_reviews = @approved_reviews.highest_rating_first
+      when 'created_at'
+        @approved_reviews = @approved_reviews.most_recent_first
+      when 'top_reviews'
+        @approved_reviews = @approved_reviews.most_helpful_first
+      when 'has_photo'
+        @approved_reviews = @approved_reviews.has_photo
+      end
+    end
+
+    @rating = params[:rating]
+    @sort = params[:sort]
+    @search = params[:search]
     if @approved_reviews.any?
       render template: 'spree/reviews/index', layout: false
     else

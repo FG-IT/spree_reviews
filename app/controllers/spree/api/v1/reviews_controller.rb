@@ -7,6 +7,7 @@ module Spree
         before_action :load_product, only: [:new, :create]
 
         def index
+          Rails.logger.info params
           @reviews = Spree::Review.approved.ransack(params[:q]).result.order(created_at: :desc).page(params[:page]).per(params[:per_page])
           respond_with(@reviews, status: 200, default_template: :index)
         end

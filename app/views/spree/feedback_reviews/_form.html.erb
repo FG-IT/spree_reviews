@@ -1,4 +1,4 @@
-<%= form_for (@feedback_review ||= review.feedback_reviews.build), url: feedback_reviews_path(review), method: :post, remote: true do |f| %>
+<%= form_for (@feedback_review ||= review.feedback_reviews.build), url: feedback_reviews_path(review), method: :post, remote: true , :html => { :id => "new_feedback_review_#{review.id}"}  do |f| %>
   <% unless @feedback_review.errors.empty? %>
     <div class="error"><%= @feedback_review.errors[:rating] %></div>
   <% end %>

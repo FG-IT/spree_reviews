@@ -1,9 +1,9 @@
 <%= form_for review, url: product_reviews_path(product), html: {method: :post} do |f| %>
   <%= render 'spree/shared/error_messages', target: review %>
 
-  <div class="form-group">
+  <div class="form-group mt-4">
     <%= f.label :rating %>
-    <%= render 'spree/reviews/stars', stars: review.rating, edit_enabled: true %>
+    <%= render 'spree/reviews/form_stars', stars: review.rating, edit_enabled: true %>
   </div>
 
   <div class="form-group">
@@ -21,14 +21,6 @@
     <%= f.text_area :review, wrap: 'virtual', rows: 10, cols: 50, class: 'form-control' %>
   </div>
 
-  <% if Spree::Reviews::Config[:show_identifier] %>
-    <div class="checkbox">
-      <%= f.label :show_identifier do %>
-        <%= f.check_box :show_identifier, checked: true %>
-        <%= Spree::Review.human_attribute_name(:show_identifier) %>
-      <% end %>
-    </div>
-  <% end %>
   <div class="form-group">
     <%= f.label :images %>
     <%= f.file_field :images, multiple: true %>

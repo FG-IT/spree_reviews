@@ -1,66 +1,68 @@
 <% stars = product.stars %>
 <% reviews_count = product.reviews_count %>
-<header class="bb">
-  <div class="d-md-flex">
-    <div class="reviews-summary">
-      <div class="stars"><span class="empty"></span><span class="full" style="width:<%=stars*100/5 %>%"></span></div>
-      <div class="total-rating">
-        <%= stars %> out of 5
+<form id="review-sort-filter-form" class="d-block">
+  <header class="bb">
+    <div class="d-md-flex">
+      <div class="reviews-summary">
+        <div class="stars"><span class="empty"></span><span class="full" style="width:<%=stars*100/5 %>%"></span></div>
+        <div class="total-rating">
+          <%= stars %> out of 5
+        </div>
+        <div class="number-of-reviews">
+          (<%= Spree.t(:based_upon_review_count, count: reviews_count) %>)
+        </div>
       </div>
-      <div class="number-of-reviews">
-        (<%= Spree.t(:based_upon_review_count, count: reviews_count) %>)
-      </div>
-    </div>
 
-    <% rating_summary = JSON.parse(product.rating_summary) %>
-    <div class="reviews-breakdown flex-fill">
-      <table>
-        <tbody>
-        <% Array(1..5).reverse.each do |rate| %>
-          <% percentage = rating_summary[rate.to_s] ? (rating_summary[rate.to_s] * 100 / reviews_count) : 0 %>
-          <tr>
-            <td class="col1"><%= rate %> stars</td>
-            <td class="col2">
-              <div class="bar"><span class="empty"></span><span class="full" style="width:<%=percentage %>%"></span></div>
-            </td>
-            <td class="col3"><%= percentage %>%</td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div class="reviews-button">
-      <button class="">Write a Review</button>
-    </div>
-  </div>
-  <div class="d-md-flex">
-    <div class="reviews-star-rating">
-      <div class="select-wrapper">
-        <select id="" name="">
-          <option value="" selected="selected">Star Rating</option>
-          <option value="">1 Star</option>
-          <option value="">2 Star</option>
-          <option value="">3 Star</option>
-          <option value="">4 Star</option>
-          <option value="">5 Star</option>
-        </select>
+      <% rating_summary = JSON.parse(product.rating_summary) %>
+      <div class="reviews-breakdown flex-fill">
+        <table>
+          <tbody>
+          <% Array(1..5).reverse.each do |rate| %>
+            <% percentage = rating_summary[rate.to_s] ? (rating_summary[rate.to_s] * 100 / reviews_count) : 0 %>
+            <tr>
+              <td class="col1"><%= rate %> stars</td>
+              <td class="col2">
+                <div class="bar"><span class="empty"></span><span class="full" style="width:<%=percentage %>%"></span></div>
+              </td>
+              <td class="col3"><%= percentage %>%</td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="reviews-button">
+        <%= link_to Spree.t(:write_your_own_review), new_product_review_path(@product), class: 'btn btn-outline', rel: 'nofollow' %>
       </div>
     </div>
-    <div class="flex-fill reviews-filter">
-      <form class="d-flex justify-content-end">
-        <input type="search" name="" id="" placeholder="Search Reviews" class="form-text">
-        <input type="submit" value="" class="form-submit">
-
+    <div class="d-md-flex">
+      <div class="reviews-star-rating">
         <div class="select-wrapper">
-          <select id="review-sort-by" name="">
-            <option value="">Sort By</option>
-            <option value="rating">Star Rating</option>
-            <option value="created_at">Submission Time</option>
-            <option value="photo">Reviews with Photos</option>
-            <option value="helpful">Top Reviews</option>
+          <select id="star-filter" name="rating">
+            <option value="">Star Rating</option>
+            <option value="1" <%= (@rating == "1" ? 'selected' : '') %>>1 Star</option>
+            <option value="2" <%= (@rating == "2" ? 'selected' : '') %>>2 Star</option>
+            <option value="3" <%= (@rating == "3" ? 'selected' : '') %>>3 Star</option>
+            <option value="4" <%= (@rating == "4" ? 'selected' : '') %>>4 Star</option>
+            <option value="5" <%= (@rating == "5" ? 'selected' : '') %>>5 Star</option>
           </select>
         </div>
-      </form>
+      </div>
+      <div class="flex-fill reviews-filter">
+        <div class="d-flex justify-content-end">
+          <input type="search" name="search" id="review-search" value="<%=@search %>" placeholder="Search Reviews" class="form-text">
+          <input type="submit" value="" class="form-submit">
+
+          <div class="select-wrapper">
+            <select id="review-sort-by" name="sort">
+              <option value="">Sort By</option>
+              <option value="rating" <%= (@sort == "rating" ? 'selected' : '') %>>Star Rating</option>
+              <option value="created_at" <%= (@sort == "created_at" ? 'selected' : '') %>>Submission Time</option>
+              <option value="has_photo" <%= (@sort == "has_photo" ? 'selected' : '') %>>Reviews with Photos</option>
+              <option value="helpful" <%= (@sort == "helpful" ? 'selected' : '') %>>Top Reviews</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+</form>

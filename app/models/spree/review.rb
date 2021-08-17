@@ -19,8 +19,12 @@ class Spree::Review < ActiveRecord::Base
   scope :localized, ->(lc) { where('spree_reviews.locale = ?', lc) }
   scope :most_recent_first, -> { order('spree_reviews.created_at DESC') }
   scope :oldest_first, -> { reorder('spree_reviews.created_at ASC') }
+  scope :highest_rating_first, -> { reorder('spree_reviews.rating DESC') }
+  scope :most_helpful_first, -> { reorder('spree_reviews.helpful_count DESC') }
   scope :preview, -> { limit(Spree::Reviews::Config[:preview_size]).oldest_first }
   scope :approved, -> { where(approved: true) }
+  scope :has_photo, -> { joins(:images_attachments) }
+  scope :rating_filter, ->(rating) { where(rating: rating) }
   scope :not_approved, -> { where(approved: false) }
   scope :default_approval_filter, -> { Spree::Reviews::Config[:include_unapproved_reviews] ? all : approved }
 

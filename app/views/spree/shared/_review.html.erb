@@ -2,23 +2,27 @@
   <%= render 'spree/reviews/stars', stars: review.rating %>
   <h6><%= review.title %></h6>
   <strong>
-    <time><%=  review.created_at.to_date.strftime("%B %e, %Y") %></time>
-    by <strong  itemprop="author"><%= review.name %></strong>
-    <% if review.verified_purchase %><span class="brand">Verified purchase</span> <%end %>
+    <time><%= review.created_at.to_date.strftime("%B %e, %Y") %></time>
+    by <strong itemprop="author"><%= review.name %></strong>
+    <% if review.verified_purchase %><span class="brand">Verified purchase</span>
+    <% end %>
   </strong>
   <div itemprop="reviewBody">
     <%= simple_format(review.review) %>
   </div>
   <% if review.images.attached? %>
-  <div class="d-flex">
-    <% review.images.each do |img| %>
-      <div class="gallery-photo">
-      <a href=""><%= image_tag(main_app.url_for(img.variant(resize: "85x85"))) %></a>
-      </div>
-    <% end %>
-  </div>
+    <div class="d-flex">
+      <% review.images.each do |img| %>
+        <div class="gallery-photo">
+          <a href="<%= main_app.url_for(img.variant(gravity: 'center',
+                                                    resize: '500x500>',
+                                                    extent: '500x500>',
+                                                    quality: 100)) %>"><%= image_tag(main_app.url_for(img.variant(resize: "85x85"))) %></a>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-  <div class="user" ></div>
+  <div class="user"></div>
   <span itemprop="datePublished" content="<%= review.created_at.to_date.to_s %>"></span>
   <span itemprop="reviewRating" content="<%= review.rating %>"></span>
   <% if Spree::Reviews::Config[:feedback_rating] && (!Spree::Reviews::Config[:require_login] || spree_current_user) %>

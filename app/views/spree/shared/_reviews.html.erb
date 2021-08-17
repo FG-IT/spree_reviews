@@ -1,6 +1,6 @@
 <div id="reviews" class="reviews bt">
   <h4 class="product-section-title">Customer reviews & ratings</h4>
-  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @product.reviews.approved.count == 0 %>
+  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @approved_reviews.count == 0 %>
     <p class="reviews-none"><%= Spree.t(:no_reviews_available) %></p>
   <% else %>
     <%= render 'spree/shared/rating_detail', product: @product, review: 0 %>
@@ -18,4 +18,32 @@
       </div>
     </div>
   <% end %>
+
+  <div class="modal review-image-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header pb-0 px-4 pt-4 border-0">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">
+            <%= icon(name: 'close',
+                     classes: 'd-block d-lg-none',
+                     width: 16,
+                     height: 16) %>
+            <%= icon(name: 'close',
+                     classes: 'd-none d-lg-block',
+                     width: 30,
+                     height: 30) %>
+          </span>
+          </button>
+        </div>
+        <div class="modal-body p-4">
+
+              <img class="modal-img"/>
+            
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
