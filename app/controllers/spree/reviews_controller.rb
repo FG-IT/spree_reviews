@@ -30,11 +30,9 @@ class Spree::ReviewsController < Spree::StoreController
     @rating = params[:rating]
     @sort = params[:sort]
     @search = params[:search]
-    if @approved_reviews.any?
-      render template: 'spree/reviews/index', layout: false
-    else
-      head :no_content
-    end
+
+    render template: 'spree/reviews/index', layout: false
+
   end
 
   def new

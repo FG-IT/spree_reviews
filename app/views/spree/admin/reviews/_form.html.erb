@@ -9,10 +9,18 @@
   <%= f.label :title %>
   <%= f.text_field :title, class: 'form-control' %>
 </div>
-
+<div class="form-group">
+  <%= f.label :rating %>
+  <%= f.text_field :rating, class: 'form-control' %>
+</div>
 <div class="form-group">
   <%= f.label :review %>
   <%= f.text_area :review, wrap: 'virtual', rows: 10, cols: 60, class: 'form-control' %>
+</div>
+
+<div class="form-group">
+  <%= f.label :images %>
+  <%= f.file_field :images, multiple: true %>
 </div>
 
 <% if Spree::Reviews::Config[:track_locale] %>

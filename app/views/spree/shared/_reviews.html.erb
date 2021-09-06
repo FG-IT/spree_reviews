@@ -1,7 +1,10 @@
 <div id="reviews" class="reviews bt">
   <h4 class="product-section-title">Customer reviews & ratings</h4>
   <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @approved_reviews.count == 0 %>
-    <p class="reviews-none"><%= Spree.t(:no_reviews_available) %></p>
+    <p class="reviews-none mt-3"><%= Spree.t(:no_reviews_available) %></p>
+    <div class="reviews-button">
+      <%= link_to Spree.t(:write_your_own_review), new_product_review_path(@product), class: 'btn btn-outline', rel: 'nofollow' %>
+    </div>
   <% else %>
     <%= render 'spree/shared/rating_detail', product: @product, review: 0 %>
     <% for review in @approved_reviews %>
@@ -37,9 +40,7 @@
           </button>
         </div>
         <div class="modal-body p-4">
-
-              <img class="modal-img"/>
-            
+          <img class="modal-img"/>
         </div>
 
       </div>

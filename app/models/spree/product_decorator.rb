@@ -2,7 +2,9 @@ require 'json'
 module Spree::ProductDecorator
   def self.prepended(base)
     base.has_many :reviews
+    base.has_many :product_reviews, class_name: 'Spree::Review'
   end
+
 
   def stars
     (avg_rating * 10).try(:round) / 10.0 || 0

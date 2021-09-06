@@ -1,0 +1,6 @@
+<%= content_tag :li do %>
+  <%= link_to_with_icon 'review',
+                        Spree.t(:reviews),
+                        reviews_admin_product_url(@product),
+                        class: "nav-link #{'active' if current == :reviews}" %>
+<% end if can?(:admin, Spree::Product) && !@product.deleted? %>

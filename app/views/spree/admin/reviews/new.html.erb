@@ -1,0 +1,29 @@
+<%=@product %>
+<% if @product %>
+  <%= render partial: 'spree/admin/shared/product_tabs', locals: {current: 'Product Reviews'} %>
+  <% content_for :page_actions do %>
+    <%= product_preview_link(@product) %>
+    <%= button_link_to(Spree.t(:new_review), new_admin_product_review_url(@product), { icon: 'add', :'data-update' => 'new_review', class: 'btn-success', id: 'new_var_link' }) if can? :create, Spree::Review %>
+  <% end %>
+<% end %>
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:reviews), spree.admin_reviews_path %> /
+  <%= Spree.t(:new_review) %>
+<% end %>
+<%= render partial: 'spree/admin/shared/error_messages', locals: {target: @review} %>
+<%= form_for [:admin, @review] do |f| %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'form', f: f %>
+    </div>
+    <div class="col-md-6">
+      <% unless @review.title.blank? %>
+        <h2><%= @review.title %></h2>
+      <% end %>
+      <blockquote>
+        <%= simple_format(@review.review) %>
+      </blockquote>
+    </div>
+  </div>
+  <%= render 'spree/admin/shared/edit_resource_links' %>
+<% end %>

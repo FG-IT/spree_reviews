@@ -1,0 +1,31 @@
+<%= render partial: 'spree/admin/shared/product_tabs', locals: {current: 'Product Reviews'} %>
+
+
+
+<%= form_for [:admin, @product, @review] do |f| %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'spree/admin/reviews/form', f: f %>
+    </div>
+    <div class="col-md-6">
+      <% unless @review.title.blank? %>
+        <h2><%= @review.title %></h2>
+      <% end %>
+      <blockquote>
+        <%= simple_format(@review.review) %>
+      </blockquote>
+
+      <% if @review.images.attached? %>
+        <div class="d-flex">
+          <% @review.images.each do |img| %>
+            <div class="gallery-photo">
+              <%= image_tag(main_app.url_for(img.variant(resize: "85x85"))) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+  <%= render 'spree/admin/shared/edit_resource_links' %>
+<% end %>
