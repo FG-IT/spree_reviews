@@ -21,7 +21,7 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
     @review.user = spree_current_user if spree_user_signed_in?
     @review.ip_address = request.remote_ip
     @review.locale = I18n.locale.to_s if Spree::Reviews::Config[:track_locale]
-
+    @review.approved = true if spree_current_user&.has_spree_role?('admin')
     authorize! :create, @review
     if @review.save
       @review.images.attach(params[:review][:images])
