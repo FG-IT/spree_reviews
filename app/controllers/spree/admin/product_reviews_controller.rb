@@ -1,6 +1,7 @@
 class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
   belongs_to 'spree/product', find_by: :slug
   helper Spree::ReviewsHelper
+  skip_before_action :load_resource, only: [:create]
 
   def index
     @reviews = collection
@@ -15,7 +16,7 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
   # save if all ok
   def create
     params[:review][:rating].sub!(/\s*[^0-9]*\z/, '') unless params[:review][:rating].blank?
-    Rails.logger.info params[:review]
+    @product = Spree::Product.friendly.find(params[:product_id])
     @review = Spree::Review.new(review_params)
     @review.product = @product
     @review.user = spree_current_user if spree_user_signed_in?
