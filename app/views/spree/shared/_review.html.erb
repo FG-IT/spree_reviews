@@ -13,7 +13,7 @@
   <% if review.images.attached? %>
     <div class="d-flex">
       <% review.images.each do |img| %>
-        <div class="gallery-photo">
+        <div class="gallery-photo bg-white">
           <a href="<%= main_app.url_for(img.variant(gravity: 'center',
                                                     resize: '500x500>',
                                                     extent: '500x500>',
