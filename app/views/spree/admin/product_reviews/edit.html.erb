@@ -1,7 +1,5 @@
 <%= render partial: 'spree/admin/shared/product_tabs', locals: {current: 'Product Reviews'} %>
 
-
-
 <%= form_for [:admin, @product, @review] do |f| %>
   <div class="row">
     <div class="col-md-6">
@@ -20,6 +18,10 @@
           <% @review.images.each do |img| %>
             <div class="gallery-photo">
               <%= image_tag(main_app.url_for(img.variant(resize: "85x85"))) %>
+              <%= link_to 'remove', admin_review_image_path(img.id),
+                method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: 'd-block text-center' %>
             </div>
           <% end %>
         </div>

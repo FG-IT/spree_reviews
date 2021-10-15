@@ -6,6 +6,7 @@ Spree::Core::Engine.add_routes do
       end
       resources :feedback_reviews, only: [:index, :destroy]
     end
+    delete 'review_image/:id' => 'product_reviews#delete_image', as: :review_image
     resource :review_settings, only: [:edit, :update]
     resources :products, only: [] do
       get :reviews, on: :member

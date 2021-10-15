@@ -1,7 +1,8 @@
 class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
   belongs_to 'spree/product', find_by: :slug
   helper Spree::ReviewsHelper
-  skip_before_action :load_resource, only: [:create]
+  skip_before_action :load_resource, only: [:create, :delete_image]
+  before_action :attach_image, only: [:update]
 
   def index
     @reviews = collection
@@ -33,7 +34,6 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
     end
   end
 
-
   def approve
     review = Spree::Review.find(params[:id])
     if review.update_attribute(:approved, true)
@@ -49,6 +49,11 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
     return if @review.product
     flash[:error] = Spree.t(:error_no_product)
     redirect_to reviews_admin_product_url(@product)
+  end
+
+  def delete_image
+    ActiveStorage::Attachment.find(params[:id]).purge
+    redirect_to request.referer
   end
 
   def model_class
@@ -68,5 +73,18 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
 
   def review_params
     params.require(:review).permit(permitted_review_attributes)
+  end
+
+  def permitted_resource_params
+    if action_name == 'update'
+      _params = params.require('review').permit(:name, :title, :rating, :review) 
+    else
+      _params = params.require('review').permit(:name, :title, :rating, :review, images: []) 
+    end
+    @permitted_resource_params ||= _params
+  end
+
+  def attach_image
+    @object.images.attach(params[:review][:images]) if params[:review]&.[](:images).present?
   end
 end
