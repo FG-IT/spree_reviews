@@ -60,7 +60,16 @@
 		<thead>
 			<tr>
 				<th><%= sort_link @search, :product, Spree.t(:product) %></th>
-				<th><%= sort_link @search, :rating, Spree::Review.human_attribute_name(:rating) %></th>
+				<th>
+					<select class="form-control form-control-sm" id="rating_selector">
+						<option value="" selected><%= Spree.t(:all) %></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</th>
 				<th><%= Spree.t(:feedback) %></th>
 				<th><%= sort_link @search, :user, Spree::Review.human_attribute_name(:user) %></th>
 				<th><%= sort_link @search, :ip_address, Spree::Review.human_attribute_name(:ip_address) %></th>
