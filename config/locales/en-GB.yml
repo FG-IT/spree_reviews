@@ -37,6 +37,7 @@ en-GB:
     no_reviews_available: "No reviews have yet been written for this product."
     out_of_5: "out of 5"
     rating: rating
+    Rating: Rating
     reviews: Reviews
     admin:
       tab:
