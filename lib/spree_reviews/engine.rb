@@ -10,6 +10,10 @@ module SpreeReviews
       Spree::Reviews::Config = Spree::ReviewSetting.new
     end
 
+    initializer "spree_reviews.assets.precompile" do |app|
+      app.config.assets.precompile += %w( spree/backend/spree_reviews.js )
+    end
+
     def self.activate
       cache_klasses = %W(#{config.root}/app/**/*_decorator*.rb)
       Dir.glob(cache_klasses) do |klass|
