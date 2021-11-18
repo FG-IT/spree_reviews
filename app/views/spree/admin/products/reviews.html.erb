@@ -6,32 +6,40 @@
 <%= csrf_meta_tag %>
 <% if @reviews.any? %>
   <table class="table" id="listing_reviews">
-    <!--    <thead>-->
-    <!--    <tr>-->
-    <!--      <th><%#= sort_link @search, :product, Spree.t(:product) %></th>-->
-    <!--      <th><%#= sort_link @search, :rating, Spree::Review.human_attribute_name(:rating) %></th>-->
-    <!--      <th><%#= Spree.t(:feedback) %></th>-->
-    <!--      <th><%#= sort_link @search, :user, Spree::Review.human_attribute_name(:user) %></th>-->
-    <!--      <th><%#= sort_link @search, :ip_address, Spree::Review.human_attribute_name(:ip_address) %></th>-->
-    <!--      <th><%#= sort_link @search, :created_at, Spree::Review.human_attribute_name(:created_at) %></th>-->
-    <!--      <th data-hook="admin_reviews_index_header_actions" class="actions"></th>-->
-    <!--    </tr>-->
-    <!--    </thead>-->
-    <tbody>
-    <% @reviews.each do |review| %>
-      <tr data-hook="admin_reviews_index_rows" id="<%= dom_id review %>" class="<%= cycle('odd', 'even') %>">
-        <td><%= review.title %></td>
-        <td><%= txt_stars(review.rating) %></td>
-        <td><%= link_to "(#{review.feedback_stars}/#{review.feedback_reviews.size})", admin_review_feedback_reviews_path(review) %></td>
-        <td><%= review.user_id ? link_to(review.user.try(:email), [:admin, review.user]) : Spree.t(:anonymous) %></td>
-        <td><%= l review.created_at, format: :short %></td>
-        <td data-hook="admin_reviews_index_row_actions" class="actions">
-          <%= link_to_with_icon 'save', Spree.t(:approve), approve_admin_product_review_url(@product, review), no_text: true, class: 'approve btn btn-default' unless review.approved %>
-          <%= link_to_edit review, url: edit_admin_product_review_url(@product, review), no_text: true, class: 'edit' %>
-          <%= link_to_delete review, url: admin_review_url(review), no_text: true %>
-        </td>
+    <thead>
+      <tr>
+        <th><%= Spree.t(:review) %></th>
+        <th>
+					<select class="form-control form-control-sm" id="rating_selector">
+						<option value="" selected><%= Spree.t(:all) %></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</th>
+        <th><%= Spree.t(:feedback) %></th>
+        <th><%= sort_link @search, :user, Spree::Review.human_attribute_name(:user) %></th>
+        <th><%= Spree.t(:created_at) %></th>
+        <th><%= Spree.t(:action) %></th>
       </tr>
-    <% end %>
+    </thead>
+    <tbody>
+      <% @reviews.each do |review| %>
+        <tr data-hook="admin_reviews_index_rows" id="<%= dom_id review %>" class="<%= cycle('odd', 'even') %>">
+          <td><%= review.title %></td>
+          <td><%= txt_stars(review.rating) %></td>
+          <td><%= link_to "(#{review.feedback_stars}/#{review.feedback_reviews.size})", admin_review_feedback_reviews_path(review) %></td>
+          <td><%= review.user_id ? link_to(review.user.try(:email), [:admin, review.user]) : Spree.t(:anonymous) %></td>
+          <td><%= l review.created_at, format: :short %></td>
+          <td data-hook="admin_reviews_index_row_actions" class="actions">
+            <%= link_to_with_icon 'save', Spree.t(:approve), approve_admin_product_review_url(@product, review), no_text: true, class: 'approve btn btn-default' unless review.approved %>
+            <%= link_to_edit review, url: edit_admin_product_review_url(@product, review), no_text: true, class: 'edit' %>
+            <%= link_to_delete review, url: admin_review_url(review), no_text: true %>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 <% else %>

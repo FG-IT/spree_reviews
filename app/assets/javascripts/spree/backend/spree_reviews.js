@@ -21,7 +21,8 @@ $(document).ready(function () {
 
   function getParamsFromUrl() {
     urlParam = window.location.href.split('?')[1]
-    if (urlParam=='') {
+
+    if (typeof(urlParam)=="undefined") {
       urlParam = 'q[name_cont]=&q[title_cont]=&q[review_cont]=&q[approved_eq]=&q[rating_eq]=&button=&per_page=25'
     }
     decodedUrl = decodeURIComponent(urlParam)
