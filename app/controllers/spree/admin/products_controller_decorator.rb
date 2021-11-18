@@ -5,9 +5,12 @@ module Spree::Admin::ProductsControllerDecorator
 
   def reviews
     load_resource
-    @reviews = Spree::Review.where(product: @product)
-                   .includes([:user, :feedback_reviews])
-                   .page(params[:page]).per(params[:per_page]).order(created_at: :desc)
+    params[:q] ||= {}
+    @search = Spree::Review.where(product: @product).ransack(params[:q])
+    @reviews = @search.result.includes([:user, :feedback_reviews]).page(params[:page]).per(params[:per_page]).order(created_at: :desc)
+    # @reviews = Spree::Review.where(product: @product)
+    #                .includes([:user, :feedback_reviews])
+    #                .page(params[:page]).per(params[:per_page]).order(created_at: :desc)
   end
 end
 
