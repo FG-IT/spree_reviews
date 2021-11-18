@@ -6,28 +6,28 @@ $(document).on('page:load', function () {
 });
 
 $(document).ready(function () {
-  params = getParamsFromUrl()
+  let params = getParamsFromUrl()
   if ('q[rating_eq]' in params) {
     $("#rating_selector").val(params['q[rating_eq]']);
   }
 
   $('#rating_selector').change(function() {
-    urlBase = window.location.href.split('?')[0]
-    params = getParamsFromUrl()
+    let urlBase = window.location.href.split('?')[0]
+    let params = getParamsFromUrl()
     params['q[rating_eq]'] = $('#rating_selector').val()
     var str = jQuery.param( params );
     window.location.replace(urlBase + '?' +str)
   });
 
   function getParamsFromUrl() {
-    urlParam = window.location.href.split('?')[1]
+    let urlParam = window.location.href.split('?')[1]
 
     if (typeof(urlParam)=="undefined") {
       urlParam = 'q[name_cont]=&q[title_cont]=&q[review_cont]=&q[approved_eq]=&q[rating_eq]=&button=&per_page=25'
     }
-    decodedUrl = decodeURIComponent(urlParam)
+    let decodedUrl = decodeURIComponent(urlParam)
     let searchParams = new URLSearchParams(decodedUrl);
-    params = {}
+    let params = {}
     searchParams.forEach(function(value, key){
       params[key] = value
     })
