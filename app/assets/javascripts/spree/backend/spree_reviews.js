@@ -15,7 +15,7 @@ $(document).ready(function () {
     let urlBase = window.location.href.split('?')[0]
     let params = getParamsFromUrl()
     params['q[rating_eq]'] = $('#rating_selector').val()
-    var str = jQuery.param( params );
+    let str = jQuery.param( params );
     window.location.replace(urlBase + '?' +str)
   });
 
