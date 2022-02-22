@@ -13,8 +13,10 @@ module SpreeReviews
 
     def generate()
       @scope.find_each do |review|
-        review_decor = ReviewDecorator.new(review)
-        @reviews << review_decor.to_review_xml
+        unless review&.product&.deleted?
+          review_decor = ReviewDecorator.new(review)
+          @reviews << review_decor.to_review_xml
+        end
       end
       xml = Ox.dump(@doc)
       File.write(@filename, xml, mode: 'wb+')
