@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'spree_core', spree_version
   s.add_runtime_dependency 'spree_auth_devise', spree_version
   s.add_runtime_dependency 'spree_extension'
+  s.add_dependency 'ox'
+  s.add_dependency 'rubyzip'
 
   s.add_development_dependency 'ffaker'
   s.add_development_dependency 'capybara'

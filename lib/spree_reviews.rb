@@ -3,6 +3,8 @@ require 'spree_reviews/engine'
 require 'spree_reviews/version'
 require 'spree_extension'
 require 'sass/rails'
+require 'ox'
+require 'zip'
 
 module Spree
   module Reviews

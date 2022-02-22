@@ -60,6 +60,11 @@ class Spree::ReviewsController < Spree::StoreController
     end
   end
 
+  def show
+    @review = Spree::Review.find(params[:id])
+    @product = @review.product
+  end
+
   private
 
   def load_product
