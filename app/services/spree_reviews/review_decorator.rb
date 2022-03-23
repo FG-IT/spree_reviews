@@ -49,9 +49,27 @@ module SpreeReviews
     def product
       pdt = @review.product
       p = Ox::Element.new('product')
+      p << product_ids
       p << Ox::Raw.new("<product_name>#{pdt.title&.encode(xml: :attr)}</product_name>")
       p << Ox::Raw.new("<product_url>#{product_link(pdt)}</product_url>")
       p
+    end
+
+    def product_ids
+      p_ids = Ox::Element.new('product_ids')
+      p_ids << Ox::Raw.new("<mpns>#{mpns}</mpns>")
+      p_ids << Ox::Raw.new("<brands><brand>#{@review.product.main_brand.encode(xml: :attr)}</brand></brands>") if @review.product&.main_brand.present? 
+      p_ids
+    end
+
+    def mpns
+      pdt = @review.product
+      variants = pdt.variants_including_master
+      p_ids = Ox::Element.new('product_ids')
+      variants.map do |varaint|
+        mpn = (pdt&.main_brand&.gsub(/\W/, '').try(:[], 0, 2).try(:upcase) || '') + varaint.id.to_s
+        "<mpn>#{mpn}</mpn>"
+      end.join('')
     end
 
     def product_link(product)

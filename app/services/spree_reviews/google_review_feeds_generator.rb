@@ -9,7 +9,7 @@ module SpreeReviews
       offset = 0
       file_count = 0
       while (true) do 
-        q = Spree::Review.where.not(product_id: nil).includes(:product).offset(offset).limit(SINGLE_FILE_REVIEW_SIZE)
+        q = Spree::Review.where.not(product_id: nil).includes({product: :variants_including_master}).offset(offset).limit(SINGLE_FILE_REVIEW_SIZE)
         filename = BASE_DIR.join("#{FILE_PREFIX}#{file_count}.xml")
         GoogleReviewFeedGenerator.new(filename, q).generate
         if q.size < SINGLE_FILE_REVIEW_SIZE
