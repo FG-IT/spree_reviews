@@ -14,7 +14,7 @@ module SpreeReviews
             data = headers.zip(row).to_h
             record = data_to_record(data)
             record[:product_id] = product_id
-            records.push(record) if record[:rating] > 3
+            records.push(record) if record_valid?(record)
           end
           if records.size == 100
             Spree::Review.insert_all(records)
@@ -29,7 +29,7 @@ module SpreeReviews
         def data_to_record(data)
           created_at = DateTime.strptime(data['review_date'], "%m/%d/%Y") + (rand(24 * 60 * 60)).seconds
           {
-            name: data['reviewer'],
+            name: data['reviewer'] || 'Anonymous',
             rating: data['rating'].to_i,
             title: data['review_title'],
             review: data['review_text'],
@@ -44,6 +44,10 @@ module SpreeReviews
         def valid?(headers)
           required_headers = Set.new(['rating', 'review_title', 'review_text', 'review_date', 'reviewer'])
           required_headers.subset?(headers.to_set)
+        end
+
+        def record_valid?(record)
+          record[:rating] > 3 && record[:name].present? && (record[:title] || record[:review]).present?
         end
     end
   end
