@@ -11,6 +11,9 @@ Spree::Core::Engine.add_routes do
     resources :products, only: [] do
       get :reviews, on: :member
       resources :reviews, :controller => "product_reviews" do
+        collection do
+          post :file_upload
+        end
         member do
           get :approve
         end

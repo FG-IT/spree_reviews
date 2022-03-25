@@ -4,6 +4,12 @@
   <%= button_link_to(Spree.t(:new_review), new_admin_product_review_url(@product), {icon: 'add', :'data-update' => 'new_review', class: 'btn-success', id: 'new_var_link'}) if can? :create, Spree::Review %>
 <% end %>
 <%= csrf_meta_tag %>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <%= render 'spree/admin/shared/review_upload_widget'%>
+  </div>
+</div>
+
 <% if @reviews.any? %>
   <table class="table" id="listing_reviews">
     <thead>

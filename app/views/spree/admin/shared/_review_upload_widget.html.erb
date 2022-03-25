@@ -1,0 +1,20 @@
+<div class='card'>
+  <div class="card-header">
+    Upload Review File(.cvs file only)
+  </div>
+  <div class='card-body text-center'>
+    <p class="card-text text-left">
+      <b>required columns</b>: 'rating', 'review_title', 'review_date', 'review_text', 'reviewer' <br>
+      <b>optional columns</b>: 'helpful_vote' <br>
+      <i>all other columns will be omitted</i>
+    </p>
+    <%= form_tag file_upload_admin_product_reviews_path(@product), method: :post, multipart: true  do |f| %>
+      <div class="input-group mb-3">
+        <div class="custom-file">
+          <%= file_field_tag :review_file, class: "", accept: 'text/csv', required: true %>
+        </div>
+      </div>
+      <button class='btn btn-primary'>Upload</button>
+    <% end %>
+  </div>
+</div>

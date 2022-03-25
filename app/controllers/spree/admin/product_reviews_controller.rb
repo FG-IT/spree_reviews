@@ -34,6 +34,12 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
     end
   end
 
+  def file_upload
+    @product = Spree::Product.find_by(slug: params[:product_id])
+    SpreeReviews::ReviewFileProcessor.process(params[:review_file].path, @product.id)
+    redirect_to admin_product_reviews_path(@product)
+  end
+
   def approve
     review = Spree::Review.find(params[:id])
     if review.update_attribute(:approved, true)
