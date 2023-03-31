@@ -1,5 +1,5 @@
 require 'json'
-module Spree::ProductDecorator
+module ::SpreeReview::Spree::ProductDecorator
   def self.prepended(base)
     base.has_many :reviews
     base.has_many :product_reviews, class_name: 'Spree::Review'
@@ -27,4 +27,4 @@ module Spree::ProductDecorator
 
 end
 
-Spree::Product.prepend Spree::ProductDecorator
+::Spree::Product.prepend ::SpreeReview::Spree::ProductDecorator
