@@ -6,7 +6,7 @@ class Spree::ReviewsController < Spree::StoreController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    @approved_reviews = Spree::Review.approved.where(product: @product).page(params[:page]).per(params[:per_page]).order(created_at: :desc)
+    @approved_reviews = Spree::Review.includes(:images_blobs).approved.where(product: @product).page(params[:page]).per(params[:per_page]).order(created_at: :desc)
 
     if params[:rating] && params[:rating] != ''
       @approved_reviews = @approved_reviews.rating_filter params[:rating]

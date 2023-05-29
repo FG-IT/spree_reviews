@@ -1,6 +1,6 @@
 <div id="reviews" class="reviews bt">
   <h4 class="product-section-title">Customer reviews & ratings</h4>
-  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @approved_reviews.count == 0 %>
+  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false and @approved_reviews.load.size == 0 %>
     <p class="reviews-none mt-3"><%= Spree.t(:no_reviews_available) %></p>
     <div class="reviews-button">
       <%= link_to Spree.t(:write_your_own_review), new_product_review_path(@product), class: 'btn btn-outline', rel: 'nofollow' %>
