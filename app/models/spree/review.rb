@@ -28,6 +28,10 @@ class Spree::Review < ActiveRecord::Base
   scope :not_approved, -> { where(approved: false) }
   scope :default_approval_filter, -> { Spree::Reviews::Config[:include_unapproved_reviews] ? all : approved }
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["approved", "created_at", "helpful_count", "id", "id_value", "ip_address", "locale", "location", "name", "product_id", "rating", "review", "review_id", "show_identifier", "title", "updated_at", "user_id", "verified_purchase"]
+  end
+
   def feedback_stars
     return 0 if feedback_reviews.size <= 0
     ((feedback_reviews.sum(:rating) / feedback_reviews.size) + 0.5).floor
