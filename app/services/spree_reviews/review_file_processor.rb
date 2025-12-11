@@ -7,14 +7,14 @@ module SpreeReviews
         product = Spree::Product.find(product_id)
         headers = []
         records = []
-        CSV.foreach(file_path).with_index do |row, i|
+        CSV.foreach(file_path, encoding: "bom|utf-8").with_index do |row, i|
           if i == 0
             headers = row
             # raise CVSHeaderInvalidError.new('headers not valid') unless valid?(headers)
           else
             data = headers.zip(row).to_h
             record = data_to_record(data)
-            contains_amazon = data.values.any? { |v| v.to_s.downcase.include?("amazon") }
+            contains_amazon = record.values.any? { |v| v.to_s.downcase.include?("amazon") }
             unless contains_amazon
               record[:product_id] = product_id
               records.push(record) if record_valid?(record)
@@ -32,7 +32,7 @@ module SpreeReviews
       private
 
       COLUMN_ALIASES = {
-        date: ["review_date", "date", "reviewDate", "Review Date"],
+        date: ["review_date", "date", "reviewDate", "Review Date","Date"],
         reviewer: ["reviewer", "profileName", "Author Name"],
         title: %w[Title review_title title],
         review: %w[review_text text Content],
@@ -56,7 +56,7 @@ module SpreeReviews
         helpful_col = find_column(data, COLUMN_ALIASES[:helpful])
 
         created_at = Date.parse(data[date_col]) + (rand(24 * 60 * 60)).seconds
-        {
+        row = {
           name: data[reviewer_col] || 'Anonymous',
           rating: data[rating_col].to_i,
           title: data[title_col],
@@ -67,7 +67,7 @@ module SpreeReviews
           verified_purchase: true,
           helpful_count: data[helpful_col]&.to_i || 0
         }
-
+        row
       end
 
       def valid?(headers)
@@ -76,7 +76,7 @@ module SpreeReviews
       end
 
       def record_valid?(record)
-        record[:rating] > 3 && record[:name].present? && (record[:title] || record[:review]).present?
+        record[:rating] >= 3 && record[:name].present? && (record[:title] || record[:review]).present?
       end
     end
   end
