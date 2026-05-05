@@ -1,7 +1,7 @@
 class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
   belongs_to 'spree/product', find_by: :slug
   helper Spree::ReviewsHelper
-  skip_before_action :load_resource, only: [:create, :delete_image]
+  skip_before_action :load_resource, only: [:create, :delete_image, :file_upload]
   before_action :attach_image, only: [:update]
 
   def index
