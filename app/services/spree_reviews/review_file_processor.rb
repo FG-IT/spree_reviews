@@ -7,7 +7,8 @@ module SpreeReviews
         product = Spree::Product.find(product_id)
         headers = []
         records = []
-        CSV.foreach(file_path, encoding: "bom|utf-8").with_index do |row, i|
+        CSV.foreach(file_path, encoding: "bom|utf-8", row_sep: :auto,
+                    liberal_parsing: true).with_index do |row, i|
           if i == 0
             headers = row
             # raise CVSHeaderInvalidError.new('headers not valid') unless valid?(headers)
@@ -32,7 +33,7 @@ module SpreeReviews
       private
 
       COLUMN_ALIASES = {
-        date: ["review_date", "date", "reviewDate", "Review Date","Date"],
+        date: ["review_date", "date", "reviewDate", "Review Date", "Date"],
         reviewer: ["reviewer", "profileName", "Author Name"],
         title: %w[Title review_title title],
         review: %w[review_text text Content],
