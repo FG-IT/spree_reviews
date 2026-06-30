@@ -3,6 +3,7 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
   helper Spree::ReviewsHelper
   skip_before_action :load_resource, only: [:create, :delete_image, :file_upload]
   before_action :attach_image, only: [:update]
+  before_action :load_review, only: [:edit, :update]
 
   def index
     @reviews = collection
@@ -31,6 +32,22 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
       redirect_to spree.reviews_admin_product_url(@product)
     else
       render :new
+    end
+  end
+
+  def update
+
+    if @review.user.nil?
+      @review.user = spree_current_user if spree_user_signed_in?
+    end
+
+    if @review.update(review_params)
+      # unless params[:review][:images].nil?
+      #   @review.images.attach(params[:review][:images])
+      # end
+      redirect_to spree.admin_product_reviews_path, notice: 'Review updated'
+    else
+      render :edit
     end
   end
 
@@ -68,11 +85,16 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
 
   private
 
+  def load_review
+    @review ||= Spree::Review.find_by_id!(params[:id])
+  end
+
   def collection
     params[:q] ||= {}
     @search = Spree::Review.where(product: @product).ransack(params[:q])
     @collection = @search.result.includes([:product, :user, :feedback_reviews]).page(params[:page]).per(params[:per_page])
   end
+
   def permitted_review_attributes
     [:rating, :title, :review, :name, :show_identifier]
   end
@@ -83,9 +105,9 @@ class Spree::Admin::ProductReviewsController < Spree::Admin::ResourceController
 
   def permitted_resource_params
     if action_name == 'update'
-      _params = params.require('review').permit(:name, :title, :rating, :review) 
+      _params = params.require('review').permit(:name, :title, :rating, :review)
     else
-      _params = params.require('review').permit(:name, :title, :rating, :review, images: []) 
+      _params = params.require('review').permit(:name, :title, :rating, :review, images: [])
     end
     @permitted_resource_params ||= _params
   end
